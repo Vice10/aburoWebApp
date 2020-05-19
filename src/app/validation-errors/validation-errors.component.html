@@ -1,0 +1,9 @@
+<ng-container *ngIf="errors['required']">
+    {{errorPrefix}} You must enter a value
+</ng-container>
+<ng-container *ngIf="errors['notUnique']">
+    {{errorPrefix}} Already exists
+</ng-container>
+<ng-container *ngIf="errors['email']">
+    Please enter a valid email
+</ng-container>
