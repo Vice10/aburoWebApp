@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ChangeDetectorRef } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
 
@@ -22,13 +22,17 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {DataTableDataSource} from './data-table/data-table-datasource';
 import {ValidationErrorsComponent} from './validation-errors/validation-errors.component';
+import {EditCardForm} from './edit-card-form/edit-card-form'
+import { DataTableService } from './data-table/data-table.service';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainNavComponent,
     DataTableComponent,
-    ValidationErrorsComponent
+    ValidationErrorsComponent,
+    EditCardForm
   ],
   imports: [
     BrowserModule,
@@ -48,10 +52,11 @@ import {ValidationErrorsComponent} from './validation-errors/validation-errors.c
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
   ],
-  providers: [DataTableDataSource],
+  providers: [DataTableDataSource, DataTableService],
   bootstrap: [AppComponent],
-  entryComponents : [DataTableDataSource]
+  entryComponents : []
 })
 export class AppModule { }

@@ -3,7 +3,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { DataTableService } from './data-table.service';
+import {ApplicationRef, NgZone, ChangeDetectorRef } from '@angular/core';
 
 // TODO: Replace this with your own data model type
 export interface DataTableItem {
@@ -30,10 +31,15 @@ const burosUri = 'https://localhost:5001/api/ArchBuros';
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
+
 export class DataTableDataSource extends DataSource<DataTableItem> {
-  data: DataTableItem[];
+  data: DataTableItem[] = [];
+  myService : DataTableService;
   paginator: MatPaginator;
   sort: MatSort;
+  ref:ApplicationRef;
+  zone: NgZone;
+  changeDetector : ChangeDetectorRef;
 
   constructor() {
     super();
@@ -42,9 +48,11 @@ export class DataTableDataSource extends DataSource<DataTableItem> {
     this.getBuros();
     console.log('Log in the enf d consr')
     console.log(this.data);
+    this.myService = new DataTableService();
+    this.myService.serviceData = this.data;
+    this.zone = new NgZone({});
     //this.data = EXAMPLE_DATA;
-  }
-  
+  } 
   /**
    * Connect this data source to the table. The table will only update when
    * the returned stream emits new items.
@@ -98,7 +106,7 @@ export class DataTableDataSource extends DataSource<DataTableItem> {
     });
   }
 
-  private getBuros() {
+  public getBuros() {
     fetch(burosUri).then(response => {
       response.json().then(newData => {
         console.log(newData);
@@ -112,19 +120,22 @@ export class DataTableDataSource extends DataSource<DataTableItem> {
   }
   
   private assignData(myData) {
-   console.log('inside assignData');
+   //console.log('inside assignData');
    myData.forEach(
      val => this.data.push(Object.assign({}, val))
    );
-   console.log(this.data);
+   //console.log(this.data);
   }
 
-  public static buroNameIsUnique(buroName : string) {
-    return true;
-  }
-
-  public static buroAddressIsUnique(buroAddress : string) {
-    return true;
+  public addBuro(newBuro : DataTableItem){
+    //alert("Inside Addd buro data"+newBuro.id);
+    //this.data.push(newBuro);
+    //this.refreshTable();
+    this.myService.addNewElem(newBuro)
+    .subscribe((newData: DataTableItem[]) => this.zone.run(()=>{
+      this.data = newData;
+    }))
+    //this.changeDetector.detectChanges();
   }
 }
 

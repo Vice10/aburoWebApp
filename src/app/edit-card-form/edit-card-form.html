@@ -1,0 +1,66 @@
+<mat-card id="editFormCard">
+    <mat-card-title>Edit buro</mat-card-title>
+    <mat-card-subtitle>* are mandatory fields</mat-card-subtitle>
+    <mat-card-content>
+        <form [formGroup]="editForm" name="editForm" id="editForm">
+          <mat-form-field appearance="outline">
+            <mat-label>Choose buro</mat-label>
+            <mat-select id="buroName" placeholder="BuroName" #buroList
+            required [formControl]="editForm.get('selectedBuroOption')">
+              <mat-option *ngFor="let buro of burosData" [value]="buro.id">
+                {{buro.name}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="editForm.get('selectedBuroOption').status === 'INVALID'">
+              <validation-errors [errors]="editForm.get('selectedBuroOption').errors"></validation-errors>
+            </mat-error>
+          </mat-form-field>
+        <!--<div *ngIf="editForm.get('selectedBuroOption').value === '' then emptyBlock; else employeeList"></div>-->
+
+          <mat-form-field appearance="outline">
+            <mat-label>Choose a manager</mat-label>
+            <mat-select placeholder="ManagerName" required
+            [formControl]="editForm.get('selectedManagerOption')">
+              <mat-option value="0">N/A</mat-option>
+              <mat-option *ngFor="let emp of empsBuroData" [value]="emp.id">
+                {{emp.name}} {{emp.surname}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="editForm.get('selectedManagerOption').status === 'INVALID'">
+              <validation-errors [errors]="editForm.get('selectedManagerOption').errors"></validation-errors>
+            </mat-error>
+          </mat-form-field>
+          <br>
+            <mat-form-field id="newNameForm" appearance="outline">
+              <mat-label>Name</mat-label>
+              <input matInput #inputName maxlength="15"
+                placeholder="New name" required [formControl]="editForm.get('editNameField')">
+              <mat-icon matSuffix>thumb_up_alt</mat-icon>
+              <mat-hint>Max 15 characters</mat-hint>
+              <mat-hint align="end">{{inputName.value?.length || 0}}/15</mat-hint>
+              <!--<mat-error *ngIf="form.get('addNameField')">{{getNameErrorMessage()}}</mat-error>-->
+              <mat-error *ngIf="editForm.get('editNameField').status === 'INVALID'">
+                <validation-errors [errors]="editForm.get('editNameField').errors"></validation-errors>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Address</mat-label>
+                <input matInput #inputAddress maxlength="25" 
+                  placeholder="New address" required [formControl]="editForm.get('editAddressField')">
+                <mat-icon matSuffix>favorite</mat-icon>
+                <mat-hint>Max 25 characters</mat-hint>
+                <mat-hint align="end">{{inputAddress.value?.length || 0}}/25</mat-hint>
+                <!--<mat-error *ngIf="form.get('addAddressField')">{{getAddressErrorMessage()}}</mat-error>-->
+                <mat-error *ngIf="editForm.get('editAddressField').status === 'INVALID'">
+                  <validation-errors [errors]="editForm.get('editAddressField').errors"></validation-errors>
+                </mat-error>
+              </mat-form-field>
+
+        </form>
+        <mat-card-actions>
+          <button mat-flat-button (click)="submitPut()">Edit</button>
+          <button mat-flat-button (click)="resetEditForm()">Reset</button>
+        </mat-card-actions>
+    </mat-card-content>
+</mat-card>

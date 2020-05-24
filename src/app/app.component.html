@@ -4,7 +4,7 @@
     <mat-card-title>Add a new buro</mat-card-title>
     <mat-card-subtitle>* are mandatory fields</mat-card-subtitle>
     <mat-card-content>
-      <form [formGroup]="form">
+      <form [formGroup]="form" name="form" id="form">
         <mat-form-field id="newNameForm" appearance="outline">
           <mat-label>Name</mat-label>
           <input matInput #inputName maxlength="15"
@@ -38,7 +38,10 @@
     </mat-card-content>
     
   </mat-card>
+
+  <edit-card-form></edit-card-form>
   <app-data-table></app-data-table>
+  
 </app-main-nav>
 
 
